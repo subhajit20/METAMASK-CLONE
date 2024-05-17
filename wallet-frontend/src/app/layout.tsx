@@ -21,7 +21,9 @@ export default function RootLayout({
       <html lang="en">
         <body className={poppins.className}>
           <NevigationBar/>
-          {children}
+          <div>
+            {children}
+          </div>
         </body>
       </html>
     </StoreProvider>
