@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import NevigationBar from "@/components/menu/NevigationBar";
+import NevigationBar from "@/components/ui/menu/NevigationBar";
 import "./globals.css";
+import StoreProvider from '@/store/StoreProvider'
 
 const poppins = Poppins({ weight:'400',preload:false });
 
@@ -16,11 +17,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={poppins.className}>
-        <NevigationBar/>
-        {children}
-      </body>
-    </html>
+    <StoreProvider>
+      <html lang="en">
+        <body className={poppins.className}>
+          <NevigationBar/>
+          {children}
+        </body>
+      </html>
+    </StoreProvider>
   );
 }

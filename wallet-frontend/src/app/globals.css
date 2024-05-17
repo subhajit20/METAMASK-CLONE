@@ -2,10 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+:root{
+  background-color: white;
+}
+
+span{
+  color:black
+}
+
+input{
+  background-color: white;
+  color: black;
+}
+
 /* :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+ 
 }
 
 @media (prefers-color-scheme: dark) {
