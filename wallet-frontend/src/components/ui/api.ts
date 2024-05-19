@@ -1,0 +1,3 @@
+const API_KEY:string = 'GENI38592PJ49SBYTHW2CQ3SUYBTEWAWVZ';
+
+export default API_KEY;

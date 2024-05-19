@@ -7,7 +7,7 @@ import { ethers } from 'ethers';
 
 export enum componentName {
     IMPORTWALLET,
-    SIGNUPMATCHINGPHRASE
+    CREATENEWALLET
 }
 
 type Props = {
@@ -96,7 +96,7 @@ const MatchingPhrase = (props: Props) => {
         try{
             const res = checkAllInputsFilled();
             console.log(typeof res)
-            if(typeof res !== 'number'){
+            if(typeof res !== 'number' && wallet){
                 const wallet_actual_phrase = wallet?.mnemonic?.phrase.split(' ');
                 console.log("Inputed - ",res)
                 console.log(wallet_actual_phrase)
@@ -105,6 +105,8 @@ const MatchingPhrase = (props: Props) => {
                         new Error("Phrases are not same!")
                     }
                 }
+
+                localStorage.setItem('acc',JSON.stringify(wallet));
                 setIsTruePhrase(true)
             }else{
                 console.log("Error")
@@ -149,7 +151,7 @@ const MatchingPhrase = (props: Props) => {
             </div>
             <div className='flex justify-center p-4 gap-5'>
                 <label className="btn btn-primary self-center rounded-full" htmlFor="modal-3" onClick={()=> props.prevComponent(props.steps! - 1)}>Go Back</label>
-                <label className="btn btn-primary self-center rounded-full" htmlFor="modal-3" onClick={props.name == componentName.SIGNUPMATCHINGPHRASE ? matchingPhrase : checkValidPhrase}>
+                <label className="btn btn-primary self-center rounded-full" htmlFor="modal-3" onClick={props.name == componentName.CREATENEWALLET ? matchingPhrase : checkValidPhrase}>
                     Confirm secret recovery phrase
                 </label>
             </div>

@@ -2,13 +2,14 @@
 import React,{ useEffect, useState } from 'react'
 import Image from 'next/image';
 import MetaMask from '../../../public/assets/MetaMask_Fox.png';
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/store/hook';
 import { useAppDispatch } from '@/store/hook';
 import { selectUser,createAccount } from '@/features/userSlice';
 import Alert from '../ui/alert/Alert';
 import Modal from '../ui/modal/Modal';
-import { Wallet, ethers } from 'ethers';
+import { ethers } from 'ethers';
+import MetaMaskLogo from '../ui/metamasklogo/MetaMaskLogo';
 
 type Props = {}
 
@@ -50,7 +51,7 @@ const SignUp = (props: Props) => {
     }
   }
   const goToPhrasePage = () =>{
-    router.push('/importwallet');
+    router.push('/createnewwallet/verify');
   }
   return (
     <div className="form-field w-2/6 relative -top-20 flex-col gap-y-5">
@@ -61,7 +62,7 @@ const SignUp = (props: Props) => {
         isFormField === false ? <Alert okay={isFormField} /> : ''
       }
         <div className='w-full flex justify-center'>
-            <Image height={200} width={200} alt='' src={MetaMask} />
+            <MetaMaskLogo />
         </div>
         <div className="form-field">
           <label className="form-label">
