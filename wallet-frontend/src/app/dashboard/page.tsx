@@ -5,7 +5,7 @@ type Props = {}
 
 const page = (props: Props) => {
   return (
-    <div className='bg-white h-full flex justify-center items-center'>
+    <div className='bg-white w-full h-full flex justify-center items-center'>
       <Dashboard />
     </div>
   )
