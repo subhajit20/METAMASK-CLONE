@@ -9,13 +9,13 @@ import AccountBalance from './AccountBalance';
 import SendEther from './SendEther';
 import SendEthModal from '../modal/SendEthModal';
 import TransactionList from './TransactionList';
+import Spinner from '../icons/Spinner';
 
 type Props = {
     address?: string
 }
 
 const AccountDetails = (props: Props) => {
-    const [address,setAddress] = useState<string | null>();
     const [fullAddess, setFullAddress] = useState<string | null>();
     const [balance,setBalance] = useState<string | null>();
     const [etherScanPr,setEtherScanPr] = useState<EtherscanProvider>();
@@ -26,7 +26,6 @@ const AccountDetails = (props: Props) => {
             if(acc){
                 const account: HDNodeWallet = JSON.parse(acc);
                 setFullAddress(account.address)
-                setAddress(`${account.address.slice(0,5)}...${account.address.slice(-4)}`);
                 try{
                     const provider = new EtherscanProvider(
                             'sepolia',
@@ -37,7 +36,7 @@ const AccountDetails = (props: Props) => {
                         //     window.ethereum
                         // );
                     const accBalance: bigint = await provider.getBalance(account.address);
-                    console.log(accBalance)
+                    // console.log(accBalance < 10)
                     setBalance(ethers.formatEther(accBalance));
                         // const pr = new EtherscanProvider(
                         //     'sepolia',
@@ -82,18 +81,23 @@ const AccountDetails = (props: Props) => {
     // },[balance])
   return (
         <div className='flex flex-col items-center justify-center gap-y-5'>
-            <SendEthModal
-                from={fullAddess!}
-                to=''
-                value='0.1'
-            />
-            <AccountAddressCopy address={fullAddess!} />
-            <AccountBalance balance={balance!} />
-            <SendEther />
-            <TransactionList
-                provider={etherScanPr!}
-                address={fullAddess!}
-            />
+            {
+                fullAddess && balance && etherScanPr ? <>
+                    <SendEthModal
+                        from={fullAddess!}
+                        to=''
+                        value={balance}
+                        provider={etherScanPr}
+                    />
+                    <AccountAddressCopy address={fullAddess!} />
+                    <AccountBalance balance={balance!} />
+                    <SendEther />
+                    <TransactionList
+                        provider={etherScanPr!}
+                        address={fullAddess!}
+                    />
+            </> : <Spinner />
+            }
         </div>
   )
 }

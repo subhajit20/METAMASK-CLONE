@@ -8,7 +8,7 @@ const AccountBalance = (props: Props) => {
 
   return (
     <div>
-        <h1 className='text-2xl md:text-6xl text-center text-black'>{props.balance}ETH</h1>
+        <h1 className='text-xl md:text-3xl text-center text-black'>{props.balance}SepoliaETH</h1>
     </div>
   )
 }

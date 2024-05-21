@@ -11,7 +11,7 @@ type Props = {
 
 const TxnList = (props: Props) => {
   return (
-    <div className='cursor-pointer flex py-3 px-2 rounded-full justify-between items-center w-[50rem] bg-slate-200 '>
+    <div className='cursor-pointer flex py-3 px-2 rounded-full justify-between items-center w-[20rem] md:w-[30rem] bg-slate-200 '>
         <div className='justify-self-start'>
             {
               props.to.toLowerCase() === props.myAddress.toLowerCase() ? <Get /> : <Send />

@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { ethers,EtherscanProvider, Transaction } from 'ethers';
+import { ethers,EtherscanProvider } from 'ethers';
 import TxnList from '../list/TxnList';
 
 type Props = {
@@ -15,6 +15,7 @@ const TransactionList = (props: Props) => {
     useEffect(()=>{
         async function getAllTransaction(){
             try{
+                
                 const allTxnList = await provider.fetch('account',
                 {
                     action: "txlist",
@@ -38,7 +39,7 @@ const TransactionList = (props: Props) => {
             <h1 className='text-2xl text-blue-500 text-left'>Transactions</h1>
             {
                 allTransaction.length > 0 ? allTransaction.map((txn,i)=>{
-                    console.log(new Date(parseInt(txn.timeStamp)))
+                    // console.log(new Date(parseInt(txn.timeStamp)))
                     return <TxnList
                         key={i}
                         to={txn.to!}
