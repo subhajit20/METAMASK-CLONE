@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { ethers,EtherscanProvider } from 'ethers';
+import { ethers,EtherscanProvider, Transaction } from 'ethers';
 import TxnList from '../list/TxnList';
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 
 const TransactionList = (props: Props) => {
     const { provider,address } = props;
-    const [allTransaction, setAllTransactions] = useState()
+    const [allTransaction, setAllTransactions] = useState<any[]>([])
 
     useEffect(()=>{
         async function getAllTransaction(){
@@ -23,8 +23,10 @@ const TransactionList = (props: Props) => {
                     endblock:99999999
                 },
                 false);
-                setAllTransactions(allTxnList)
-                console.log(allTxnList)
+                if(allTxnList.length > 0){
+                    setAllTransactions([...allTxnList])
+                    console.log(allTxnList)
+                }
             }catch(e){
                 console.log(e)
             }
@@ -34,11 +36,19 @@ const TransactionList = (props: Props) => {
   return ( 
         <>
             <h1 className='text-2xl text-blue-500 text-left'>Transactions</h1>
-            <TxnList />
-            <TxnList />
-            <TxnList />
-            <TxnList />
-            <TxnList />
+            {
+                allTransaction.length > 0 ? allTransaction.map((txn,i)=>{
+                    console.log(new Date(parseInt(txn.timeStamp)))
+                    return <TxnList
+                        key={i}
+                        to={txn.to!}
+                        myAddress={address}
+                        value={`${ethers.formatEther(txn.value)}ETH`}
+                        timeStamp={txn.timeStamp}
+                    />
+                }) : ''
+            }
+            
         </>
   )
 }

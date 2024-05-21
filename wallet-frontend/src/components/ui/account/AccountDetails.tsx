@@ -87,7 +87,7 @@ const AccountDetails = (props: Props) => {
                 to=''
                 value='0.1'
             />
-            <AccountAddressCopy address={address!} />
+            <AccountAddressCopy address={fullAddess!} />
             <AccountBalance balance={balance!} />
             <SendEther />
             <TransactionList
