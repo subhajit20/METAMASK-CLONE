@@ -1,3 +1,3 @@
-const API_KEY:string = 'GENI38592PJ49SBYTHW2CQ3SUYBTEWAWVZ';
+const API_KEY:string = '';
 
 export default API_KEY;
