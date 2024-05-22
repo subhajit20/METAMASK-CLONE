@@ -4,7 +4,7 @@ import NevigationBar from "@/components/ui/menu/NevigationBar";
 import "./globals.css";
 import StoreProvider from '@/store/StoreProvider'
 
-const poppins = Poppins({ weight:'400',preload:false });
+const poppins = Poppins({ weight:'400',preload: false });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,8 +18,8 @@ export default function RootLayout({
 }>) {
   return (
     <StoreProvider>
-      <html lang="en">
-        <body className={poppins.className}>
+      <html lang="en" className={poppins.className}>
+        <body >
           <NevigationBar/>
           <div>
             {children}

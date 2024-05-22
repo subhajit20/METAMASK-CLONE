@@ -1,5 +1,4 @@
 import React from 'react'
-import AccountAddressCopy from '../ui/account/AccountAddressCopy';
 import AccountDetails from '../ui/account/AccountDetails';
 
 type Props = {}

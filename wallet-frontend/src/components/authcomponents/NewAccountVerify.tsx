@@ -9,8 +9,8 @@ type Props = {}
 const NewAccountVerify = (props: Props) => {
     const [currntComponent,setCurrentComponent] = useState(0)
     const components = [
-        <SeedPhrase steps={currntComponent} nextComponent={setCurrentComponent} />,
-        <MatchingPhrase name={componentName.CREATENEWALLET} steps={currntComponent} prevComponent={setCurrentComponent} />
+        <SeedPhrase key={0} steps={currntComponent} nextComponent={setCurrentComponent} />,
+        <MatchingPhrase key={1} name={componentName.CREATENEWALLET} steps={currntComponent} prevComponent={setCurrentComponent} />
     ]
   return (
     <div className='bg-white min-h-[42rem]'>

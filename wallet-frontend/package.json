@@ -5,11 +5,13 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prepare": "mv out/_next out/assets && sed -i 's/\\/_next/\\/assets/g' out/**.html",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
+    "@types/chrome": "^0.0.268",
     "antd": "^5.17.3",
     "ethers": "^6.12.1",
     "next": "14.2.3",

@@ -8,7 +8,7 @@ type Props = {}
 const ExistingAccountVeify = (props: Props) => {
     const [currntComponent,setCurrentComponent] = useState(0)
     const components = [
-        <MatchingPhrase name={componentName.IMPORTWALLET} steps={currntComponent} prevComponent={setCurrentComponent} />
+        <MatchingPhrase key={0} name={componentName.IMPORTWALLET} steps={currntComponent} prevComponent={setCurrentComponent} />
     ]
   return (
     <div className='bg-white min-h-[42rem]'>

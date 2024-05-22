@@ -59,9 +59,9 @@ const TransactionMessage = (props: Props) => {
   return (
     <>
       {contextHolder}
-      <button className="btn-primary btn w-full" onClick={sendEther}>
+      <label htmlFor="modal-3" className="btn-primary btn w-full" onClick={sendEther}>
         SEND
-      </button>
+      </label>
     </>
   );
 };

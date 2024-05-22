@@ -17,7 +17,7 @@ const SeedPhrase = (props: Props) => {
           <div className=''>
             {
               wallet?.mnemonic?.phrase ? wallet?.mnemonic?.phrase.split(' ').slice(0,6).map((p,i)=>{
-                return <div className='p-2 text-black flex justify-center items-center gap-x-4 '>
+                return <div key={i} className='p-2 text-black flex justify-center items-center gap-x-4 '>
                         {i+1}<span className="badge badge-outline-primary text-base">{p}</span><br/>
                       </div>
               }) : ''
@@ -26,7 +26,7 @@ const SeedPhrase = (props: Props) => {
           <div className=''>
             {
               wallet?.mnemonic?.phrase ? wallet?.mnemonic?.phrase.split(' ').slice(6,13).map((p,i)=>{
-                return <div className='p-2 text-black flex justify-center items-center gap-x-4 '>
+                return <div key={i} className='p-2 text-black flex justify-center items-center gap-x-4 '>
                         {i+1}<span className="badge badge-outline-primary text-base">{p}</span><br/>
                       </div>
               }) : ''

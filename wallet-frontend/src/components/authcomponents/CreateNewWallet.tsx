@@ -1,40 +1,54 @@
 'use client'
-import React,{ useEffect, useState } from 'react'
-import Image from 'next/image';
-import MetaMask from '../../../public/assets/MetaMask_Fox.png';
+import React,{ useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/store/hook';
 import { useAppDispatch } from '@/store/hook';
-import { selectUser,createAccount } from '@/features/userSlice';
+import { selectUser,createAccount, setPassword } from '@/features/userSlice';
 import Alert from '../ui/alert/Alert';
 import Modal from '../ui/modal/Modal';
 import { ethers } from 'ethers';
 import MetaMaskLogo from '../ui/metamasklogo/MetaMaskLogo';
+import { HDNodeWallet } from 'ethers';
 
-type Props = {}
+type Props = {
+  routename:string
+  phrasePage: boolean
+}
 
 const SignUp = (props: Props) => {
-  const [password,setPassword] = useState<string>('');
   const [cofirmPassword,setCofirmPassword] = useState<string | null>(null);
   const [isFormField,setIsFormField] = useState<boolean | null>(null);
-  const { wallet } = useAppSelector(selectUser);
+  const { wallet,password } = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const router = useRouter();
   
   const CreateWallet = (e:any) =>{
     try{
         if(password !== '' && cofirmPassword === password){
-            const _wallet = ethers.Wallet.createRandom()
+          if(props.phrasePage !== true){
+            const acc = localStorage.getItem('acc');
+            if(acc){
+              const account = JSON.parse(acc);
+              if(account.mnemonic?.password === ''){
+                account.mnemonic.password = password;
+                localStorage.setItem('acc',JSON.stringify(account));
+                router.push(props.routename);
+              }
+            }
+          }else{
+            const _wallet = ethers.Wallet.createRandom();
             console.log(_wallet);
             // window.alert(_wallet?.address);
             // const data = new Wallet(_wallet.privateKey);
-            dispatch(
-              createAccount({
-                wallet:_wallet
-              })
-            )
             setIsFormField(true);
-            
+            dispatch(
+                createAccount({
+                  wallet: _wallet
+                })
+              )
+            localStorage.setItem('acc',JSON.stringify(_wallet));
+            router.push(props.routename);
+          }
         }else{
             setIsFormField(false);
             new Error("Please filled the form correctly!")
@@ -50,13 +64,23 @@ const SignUp = (props: Props) => {
       }
     }
   }
+
+  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
+    dispatch(
+      setPassword({
+        password:e.target.value
+      })
+    )
+  }
+
   const goToPhrasePage = () =>{
-    router.push('/createnewwallet/verify');
+    router.push(props.routename);
+    // router.push('/createnewwallet/verify');
   }
   return (
     <div className="form-field w-2/6 relative -top-20 flex-col gap-y-5">
       {
-        isFormField == true ? <Modal mnemonic={wallet?.mnemonic?.phrase} go={goToPhrasePage}  /> : ''
+        isFormField == true && props.phrasePage === true ? <Modal mnemonic={wallet?.mnemonic?.phrase} go={goToPhrasePage}  /> : ''
       }
       {
         isFormField === false ? <Alert okay={isFormField} /> : ''
@@ -68,7 +92,7 @@ const SignUp = (props: Props) => {
           <label className="form-label">
             <span className="form-label-alt text-base">New password (8 characters min)</span>
           </label>
-		        <input type="password" onChange={(e)=> setPassword(e.target.value)}  className="input text-black placeholder:text-black input-lg max-w-full bg-white" placeholder="Enter password" />
+		        <input type="password" onChange={(e)=> onPasswordChange(e)}  className="input text-black placeholder:text-black input-lg max-w-full bg-white" placeholder="Enter password" />
         </div>
         <div className="form-field">
           <label className="form-label">

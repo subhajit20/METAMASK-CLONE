@@ -6,7 +6,10 @@ type Props = {}
 const page = (props: Props) => {
   return (
     <section className="bg-white min-h-[40rem] flex justify-center items-center">
-      <CreateNewWallet />
+      <CreateNewWallet
+        routename={'/createnewwallet/verify'}
+        phrasePage={true}
+      />
     </section>
   )
 }

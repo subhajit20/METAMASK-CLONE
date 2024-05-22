@@ -1,15 +1,15 @@
 'use client'
 import React,{useEffect, useState} from 'react';
 import API_KEY from '../api';
-import { HDNodeWallet, ethers, EtherscanProvider,JsonRpcProvider
+import { HDNodeWallet, ethers, EtherscanProvider
  } from 'ethers';
-import Copy from '../icons/Copy';
 import AccountAddressCopy from './AccountAddressCopy';
 import AccountBalance from './AccountBalance';
 import SendEther from './SendEther';
 import SendEthModal from '../modal/SendEthModal';
 import TransactionList from './TransactionList';
 import Spinner from '../icons/Spinner';
+import { useRouter } from 'next/navigation';
 
 type Props = {
     address?: string
@@ -19,6 +19,7 @@ const AccountDetails = (props: Props) => {
     const [fullAddess, setFullAddress] = useState<string | null>();
     const [balance,setBalance] = useState<string | null>();
     const [etherScanPr,setEtherScanPr] = useState<EtherscanProvider>();
+    const router = useRouter();
 
     useEffect(()=>{
         async function getingo() {
@@ -62,23 +63,18 @@ const AccountDetails = (props: Props) => {
         getingo()
     },[])
 
-    // useEffect(()=>{
-    //     async function getBalanceInUsd() {
-    //         try{
-    //             const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd",{
-    //                 headers:{
-    //                     'mode':'no-cors'
-    //                 }
-    //             });
-    //             const data = await res.json();
-
-    //             console.log(data);
-    //         }catch(e){
-    //             console.log(e)
-    //         }
-    //     }
-    //     getBalanceInUsd()
-    // },[balance])
+    useEffect(()=>{
+        function checkUser(){
+            const acc = localStorage.getItem('acc');
+            if(acc){
+                const account:HDNodeWallet = JSON.parse(acc);
+                if(account.mnemonic?.password === ''){
+                    router.push('/');
+                }
+            }
+        }
+        checkUser()
+    },[])
   return (
         <div className='flex flex-col items-center justify-center gap-y-5'>
             {

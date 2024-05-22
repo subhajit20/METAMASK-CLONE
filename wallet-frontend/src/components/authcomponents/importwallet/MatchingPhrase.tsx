@@ -4,6 +4,7 @@ import Alert from '../../ui/alert/Alert';
 import { useAppSelector } from '@/store/hook';
 import { selectUser } from '@/features/userSlice';
 import { ethers } from 'ethers';
+import { useRouter } from 'next/navigation';
 
 export enum componentName {
     IMPORTWALLET,
@@ -31,6 +32,7 @@ interface mnemonic_pharase_inputs {
 }
 
 const MatchingPhrase = (props: Props) => {
+    const router = useRouter()
     const [phrases,setPrases] = useState<mnemonic_pharase_inputs>({
         input1:'',
         input2:'',
@@ -46,7 +48,7 @@ const MatchingPhrase = (props: Props) => {
         input12:'',
     })
     const [istruePhrase,setIsTruePhrase] = useState<boolean | null>(null);
-    const { wallet } = useAppSelector(selectUser);
+    const { wallet,password } = useAppSelector(selectUser);
 
     const onChangeInputs = (e: any ,input: string) =>{
         setPrases((prev: any)=> {
@@ -74,10 +76,14 @@ const MatchingPhrase = (props: Props) => {
 
     const checkValidPhrase = () =>{
         const res = checkAllInputsFilled();
-
+        
         try{
             if(typeof res !== 'number'){
-                ethers.Wallet.fromPhrase(res)
+                const isValid = ethers.Wallet.fromPhrase(res);
+                console.log(isValid);
+                localStorage.removeItem('acc');
+                localStorage.setItem('acc',JSON.stringify(isValid));
+                router.push('/importwallet/newpassword');
                 setIsTruePhrase(true)
             }
         }catch(e){
@@ -92,7 +98,7 @@ const MatchingPhrase = (props: Props) => {
 
     }
 
-    const matchingPhrase = () =>{
+    const newWalletMatchingPhrase = () =>{
         try{
             const res = checkAllInputsFilled();
             console.log(typeof res)
@@ -106,8 +112,16 @@ const MatchingPhrase = (props: Props) => {
                     }
                 }
 
-                localStorage.setItem('acc',JSON.stringify(wallet));
-                setIsTruePhrase(true)
+                const acc = localStorage.getItem('acc');
+                if(acc){
+                    const storedAcc = JSON.parse(acc);
+                    if(storedAcc.mnemonic.password === ''){
+                        storedAcc.mnemonic.password = password;
+                        localStorage.setItem('acc',JSON.stringify(storedAcc));
+                        router.push('/dashboard');
+                        setIsTruePhrase(true)
+                    }
+                }
             }else{
                 console.log("Error")
                 new Error("Please filled all the fields")
@@ -143,7 +157,7 @@ const MatchingPhrase = (props: Props) => {
             <div className="form-control relative w-full grid grid-cols-3 gap-10 px-5">
                 {
                     Object.entries(phrases).map((inputs,index)=>{
-                        return <span className='flex gap-x-2 justify-center items-center'>
+                        return <span key={index} className='flex gap-x-2 justify-center items-center'>
                                     {index+1} <input onChange={(e)=> onChangeInputs(e,inputs[0])} name={inputs[0]} type="password" className="input input-lg max-w-52 bg-white text-black" placeholder="Enter password" />
                                 </span>
                     })
@@ -151,7 +165,7 @@ const MatchingPhrase = (props: Props) => {
             </div>
             <div className='flex justify-center p-4 gap-5'>
                 <label className="btn btn-primary self-center rounded-full" htmlFor="modal-3" onClick={()=> props.prevComponent(props.steps! - 1)}>Go Back</label>
-                <label className="btn btn-primary self-center rounded-full" htmlFor="modal-3" onClick={props.name == componentName.CREATENEWALLET ? matchingPhrase : checkValidPhrase}>
+                <label className="btn btn-primary self-center rounded-full" htmlFor="modal-3" onClick={props.name == componentName.CREATENEWALLET ? newWalletMatchingPhrase : checkValidPhrase}>
                     Confirm secret recovery phrase
                 </label>
             </div>
