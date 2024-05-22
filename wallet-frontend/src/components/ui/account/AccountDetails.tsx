@@ -30,7 +30,7 @@ const AccountDetails = (props: Props) => {
                 try{
                     const provider = new EtherscanProvider(
                             'sepolia',
-                            API_KEY
+                            process.env.API_KEY
                         );
                         setEtherScanPr(provider);
                         // const provider = new JsonRpcProvider(
